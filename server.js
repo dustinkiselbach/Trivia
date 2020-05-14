@@ -54,10 +54,10 @@ io.on('connection', socket => {
   })
 
   // Listen for gameStart
-  socket.on('gameStart', () => {
+  socket.on('gameStart', room => {
     const user = getCurrentUser(socket.id)
 
-    gameStarts(io.to(user.room), botName)
+    gameStarts(io.to(user.room), room)
   })
 
   // Listen for scorechange

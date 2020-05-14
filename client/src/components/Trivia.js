@@ -78,7 +78,7 @@ function Trivia () {
   }
 
   const gameStart = () => {
-    socket.emit('gameStart')
+    socket.emit('gameStart', room)
   }
 
   // check if a certain amount of questions have been played

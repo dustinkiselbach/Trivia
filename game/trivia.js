@@ -2,10 +2,10 @@ const formatMessage = require('../utils/messages')
 const axios = require('axios')
 
 // Getting questions
-const fetch = async () => {
+const fetch = async category => {
   try {
     const res = await axios.get(
-      'https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple'
+      `https://opentdb.com/api.php?amount=12&category=${category}&difficulty=easy&type=multiple`
     )
     return res.data
   } catch (error) {
@@ -14,26 +14,24 @@ const fetch = async () => {
 }
 
 // TODO deal with adding caps on questions
-function gameStarts (socket) {
+function gameStarts (socket, category) {
   // Make call to api
-  const apiCall = fetch()
+  const apiCall = fetch(category)
   // deal with data
   apiCall.then(data => {
     if (data.results.length === 0) {
       socket.emit('message', formatMessage('bot', 'game finished'))
     } else {
-      socket.emit('question', data.results[0])
+      socket.emit('question', data.results[5])
       data.results.shift()
     }
   })
 }
 
-// TODO calculate winner
 // function for adding all users points
 function getWinner (users) {
   // Getting the scores from each user object
   const scores = users.map(user => user.score)
-  console.log(users)
 
   // getting the highest score
   const max = Math.max(...scores)

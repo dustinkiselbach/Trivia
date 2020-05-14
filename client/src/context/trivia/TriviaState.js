@@ -1,9 +1,10 @@
 import React, { useReducer } from 'react'
 import TriviaContext from './triviaContext'
 import triviaReducer from './triviaReducer'
+import axios from 'axios'
 import socketIOClient from 'socket.io-client'
 
-import { GET_USERNAME, GET_ROOM } from '../types'
+import { GET_USERNAME, GET_ROOM, GET_CATEGORIES } from '../types'
 
 const TriviaState = props => {
   const initialState = {
@@ -11,7 +12,8 @@ const TriviaState = props => {
     //'http://127.0.0.1:5000'
     socket: socketIOClient('https://cryptic-stream-18621.herokuapp.com/'),
     room: null,
-    username: null
+    username: null,
+    categories: null
   }
 
   const [state, dispatch] = useReducer(triviaReducer, initialState)
@@ -26,14 +28,27 @@ const TriviaState = props => {
     dispatch({ type: GET_ROOM, payload: room })
   }
 
+  // get all categories
+  const getCategories = async () => {
+    try {
+      const res = await axios.get('https://opentdb.com/api_category.php')
+
+      dispatch({ type: GET_CATEGORIES, payload: res.data.trivia_categories })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <TriviaContext.Provider
       value={{
         socket: state.socket,
         username: state.username,
         room: state.room,
+        categories: state.categories,
         getUsername,
-        getRoom
+        getRoom,
+        getCategories
       }}
     >
       {props.children}
