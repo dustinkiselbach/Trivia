@@ -12,7 +12,7 @@ const {
   getRoomUsers,
   updateUserScore
 } = require('./utils/users')
-const { gameStarts, addScores } = require('./game/trivia')
+const { gameStarts, getWinner } = require('./game/trivia')
 
 const io = socketio(server)
 
@@ -68,6 +68,21 @@ io.on('connection', socket => {
       room: user.room,
       users: getRoomUsers(user.room)
     })
+  })
+
+  // Listen for gameEnd
+  socket.on('gameEnd', () => {
+    const user = getCurrentUser(socket.id),
+      users = getRoomUsers(user.room),
+      winner = getWinner(users)
+
+    io.to(user.room).emit(
+      'message',
+      formatMessage(
+        botName,
+        `${winner.username} has won the game with ${winner.score} points`
+      )
+    )
   })
 
   // runs when client disconnects

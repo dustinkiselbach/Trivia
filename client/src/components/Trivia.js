@@ -1,20 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react'
 import TriviaContext from '../context/trivia/triviaContext'
+const Entities = require('html-entities').AllHtmlEntities
+
+const entities = new Entities()
 
 function Trivia () {
   const triviaContext = useContext(TriviaContext)
-
   const { socket, username, room } = triviaContext
 
+  // Getting messages from socket
   const [messages, setMessages] = useState('')
-
+  // Keeping score of correct answers
   const [score, setScore] = useState(0)
-
+  // Keeping array of questions
   const [questions, setQuestions] = useState([])
-
+  // keeping track who is in the room
   const [gameRoom, setGameRoom] = useState([])
-
+  // getting user input
   const [field, setField] = useState('')
+  // setting a message if the answer is right or wrong
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => {
     socket.emit('joinRoom', { username, room })
@@ -45,8 +50,6 @@ function Trivia () {
     setField(e.target.value)
   }
 
-  console.log(questions)
-
   const onSubmit = e => {
     e.preventDefault()
 
@@ -54,17 +57,19 @@ function Trivia () {
     const msg = field
 
     // emit message to server
-    socket.emit('chatMessage', msg)
+    // socket.emit('chatMessage', msg)
 
     // game has started
     if (questions.length > 0) {
       if (
-        questions.slice(-1)[0].data.correct_answer.toLowerCase() ===
+        questions.slice(-1)[0].correct_answer.toLowerCase() ===
         msg.toLowerCase()
       ) {
         setScore(score + 1)
+        setAlert('correct')
       } else {
-        alert('incorrect' + questions.slice(-1)[0].data.correct_answer)
+        // alert('incorrect' + questions.slice(-1)[0].correct_answer)
+        setAlert('incorrect')
       }
     }
 
@@ -76,7 +81,13 @@ function Trivia () {
     socket.emit('gameStart')
   }
 
-  console.log(gameRoom)
+  // check if a certain amount of questions have been played
+  if (questions.length >= 11) {
+    // Its not going to do it once its going to do it continously
+    setTimeout(() => {
+      socket.emit('gameEnd')
+    }, 3000)
+  }
 
   return (
     <div className='App'>
@@ -89,8 +100,13 @@ function Trivia () {
       <h1>
         {messages.username}, {messages.text}, {messages.time}
       </h1>
-      {questions.length > 0 && <h1>{questions.slice(-1)[0].data.question}</h1>}
-      <button onClick={gameStart}>Start game</button>
+      {questions.length > 0 && (
+        <h1>{entities.decode(questions.slice(-1)[0].question)}</h1>
+      )}
+      <button onClick={gameStart} disabled={questions.length >= 11}>
+        {questions.length === 0 ? 'Start game' : 'next question'}
+      </button>
+
       <h3>{score}</h3>
       {gameRoom.length > 0 &&
         gameRoom.map(user => (

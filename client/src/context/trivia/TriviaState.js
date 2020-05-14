@@ -9,7 +9,7 @@ const TriviaState = props => {
   const initialState = {
     //https://cryptic-stream-18621.herokuapp.com/
     //'http://127.0.0.1:5000'
-    socket: socketIOClient('https://cryptic-stream-18621.herokuapp.com/'),
+    socket: socketIOClient('http://127.0.0.1:5000'),
     room: null,
     username: null
   }

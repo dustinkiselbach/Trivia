@@ -13,43 +13,41 @@ const fetch = async () => {
   }
 }
 
-function questions (socket, data, i) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      socket.emit('question', { data })
-
-      resolve(data)
-    }, 10000 * (i + 1))
-  })
-}
-
+// TODO deal with adding caps on questions
 function gameStarts (socket) {
-  let promises = []
-
+  // Make call to api
   const apiCall = fetch()
-
-  apiCall.then(sampleData => {
-    for (let i = 0; i < sampleData.results.length; i++) {
-      promises.push(questions(socket, sampleData.results[i], i))
+  // deal with data
+  apiCall.then(data => {
+    if (data.results.length === 0) {
+      socket.emit('message', formatMessage('bot', 'game finished'))
+    } else {
+      socket.emit('question', data.results[0])
+      data.results.shift()
     }
-
-    Promise.all(promises).then(questions => {
-      //   socket.emit('gameOver')
-      // TODO get the scoreboards working
-      console.log('questions done')
-    })
   })
 }
 
 // TODO calculate winner
 // function for adding all users points
-function addScores (users) {
-  for (let i = 0; i < users.length; i++) {
-    console.log(users[i])
-  }
+function getWinner (users) {
+  // Getting the scores from each user object
+  const scores = users.map(user => user.score)
+  console.log(users)
+
+  // getting the highest score
+  const max = Math.max(...scores)
+
+  const res = []
+
+  // getting index of highest scores in scores array
+  scores.forEach((item, index) => (item === max ? res.push(index) : null))
+
+  // now that the winning index is in res, we can get the winner by index
+  return users[res[0]]
 }
 
 module.exports = {
   gameStarts,
-  addScores
+  getWinner
 }
