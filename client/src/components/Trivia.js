@@ -86,6 +86,8 @@ function Trivia () {
     // Its not going to do it once its going to do it continously
     setTimeout(() => {
       socket.emit('gameEnd')
+      setQuestions([])
+      setScore(0)
     }, 3000)
   }
 
@@ -106,7 +108,7 @@ function Trivia () {
       <button onClick={gameStart} disabled={questions.length >= 11}>
         {questions.length === 0 ? 'Start game' : 'next question'}
       </button>
-
+      {alert && <div>{alert}</div>}
       <h3>{score}</h3>
       {gameRoom.length > 0 &&
         gameRoom.map(user => (
