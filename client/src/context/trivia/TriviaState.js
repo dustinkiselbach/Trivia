@@ -7,7 +7,9 @@ import { GET_USERNAME, GET_ROOM } from '../types'
 
 const TriviaState = props => {
   const initialState = {
-    socket: socketIOClient('http://127.0.0.1:5000'),
+    //https://cryptic-stream-18621.herokuapp.com/
+    //'http://127.0.0.1:5000'
+    socket: socketIOClient('https://cryptic-stream-18621.herokuapp.com/'),
     room: null,
     username: null
   }
