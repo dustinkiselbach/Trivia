@@ -1,0 +1,36 @@
+// Button styles
+
+.btn {
+  display: inline-block;
+  border: none;
+  outline: none;
+  background-color: $light-color;
+  background-image: linear-gradient(
+    rgba($secondary-color, 0.8),
+    rgba($secondary-color, 0.3)
+  );
+  color: $dark-color;
+  font-size: 1.5rem;
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 400;
+  text-align: center;
+  border-radius: 2px;
+  transition: all 0.2s ease-in-out;
+
+  &:active {
+    transition: all 0.2s ease-in-out;
+    color: $light-color;
+    background-color: $primary-color-light;
+    transform: scale(1.05) translateY(-0.2rem);
+
+    box-shadow: 0 1rem 2rem rgba($dark-color, 0.5);
+  }
+}
+
+// Headings
+.title {
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+}

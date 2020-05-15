@@ -1,9 +1,11 @@
 import React from 'react'
-
+import './main.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import TriviaForm from './components/TriviaForm'
-import Trivia from './components/Trivia'
+import Welcome from './components/pages/Welcome'
+import Rooms from './components/pages/Rooms'
+import Trivia from './components//trivia/Trivia'
 import TriviaState from './context/trivia/TriviaState'
+import JoinRoom from './components/pages/JoinRoom'
 
 function App () {
   return (
@@ -11,7 +13,9 @@ function App () {
       <TriviaState>
         <Router>
           <Switch>
-            <Route path='/' exact component={TriviaForm} />
+            <Route path='/' exact component={Welcome} />
+            <Route path='/rooms' exact component={Rooms} />
+            <Route path='/joinroom' exact component={JoinRoom} />
             <Route path='/game' exact component={Trivia} />
           </Switch>
         </Router>

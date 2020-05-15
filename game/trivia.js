@@ -2,11 +2,9 @@ const formatMessage = require('../utils/messages')
 const axios = require('axios')
 
 // Getting questions
-const fetch = async category => {
+const fetch = async () => {
   try {
-    const res = await axios.get(
-      `https://opentdb.com/api.php?amount=12&category=${category}&difficulty=easy&type=multiple`
-    )
+    const res = await axios.get('https://opentdb.com/api.php?amount=50')
     return res.data
   } catch (error) {
     console.log(error)
@@ -14,13 +12,13 @@ const fetch = async category => {
 }
 
 // TODO deal with adding caps on questions
-function gameStarts (socket, category) {
+function gameStarts (socket) {
   // Make call to api
-  const apiCall = fetch(category)
+  const apiCall = fetch()
   // deal with data
   apiCall.then(data => {
     if (data.results.length === 0) {
-      socket.emit('message', formatMessage('bot', 'game finished'))
+      socket.emit('message', formatMessage('bot', 'fart'))
     } else {
       socket.emit('question', data.results[5])
       data.results.shift()

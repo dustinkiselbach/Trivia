@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import TriviaContext from './triviaContext'
 import triviaReducer from './triviaReducer'
 import axios from 'axios'
@@ -16,10 +16,18 @@ const TriviaState = props => {
     categories: null
   }
 
+  useEffect(() => {
+    // Checking if username is in localstorage
+    if (localStorage.getItem('username') !== null) {
+      getUsername(localStorage.getItem('username'))
+    }
+  }, [])
+
   const [state, dispatch] = useReducer(triviaReducer, initialState)
 
   // Get users username
   const getUsername = username => {
+    localStorage.setItem('username', username)
     dispatch({ type: GET_USERNAME, payload: username })
   }
 

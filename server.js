@@ -29,7 +29,7 @@ io.on('connection', socket => {
     socket.join(user.room)
 
     // Welcome current user
-    socket.emit('message', formatMessage(botName, 'Welcome to TrivaBunnies'))
+    socket.emit('message', formatMessage(botName, 'Welcome to Triva'))
 
     // Broadcast when a user connects
     socket.broadcast
@@ -54,10 +54,10 @@ io.on('connection', socket => {
   })
 
   // Listen for gameStart
-  socket.on('gameStart', room => {
+  socket.on('gameStart', () => {
     const user = getCurrentUser(socket.id)
 
-    gameStarts(io.to(user.room), room)
+    gameStarts(io.to(user.room))
   })
 
   // Listen for scorechange

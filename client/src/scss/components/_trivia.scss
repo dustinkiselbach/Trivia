@@ -1,0 +1,60 @@
+.trivia {
+  &__header {
+    background-color: $primary-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  &__users {
+    background-image: linear-gradient(
+      rgba($dark-color, 0.6),
+      rgba($dark-color, 0.8)
+    );
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    & .title {
+      text-align: center;
+      margin-top: 1rem;
+    }
+  }
+
+  &__user {
+    border-bottom: 1px solid rgba($light-color, 0.4);
+    display: flex;
+    justify-content: space-evenly;
+    margin: 1rem;
+  }
+
+  &__messages {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    border-bottom: 1px solid rgba($light-color, 0.4);
+  }
+
+  &__question {
+    padding: 1rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    & ul {
+      & li {
+        cursor: pointer;
+        margin: 1rem;
+        font-weight: 400;
+      }
+    }
+  }
+  & .btn {
+    width: 100%;
+  }
+}
