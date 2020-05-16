@@ -4,6 +4,7 @@ import TriviaHeader from './TriviaHeader'
 import TriviaUsers from './TriviaUsers'
 import TriviaMessages from './TriviaMessages'
 import TriviaQuestion from './TriviaQuestion'
+import TrivaTimer from './TriviaTimer'
 const Entities = require('html-entities').AllHtmlEntities
 
 const entities = new Entities()
@@ -26,6 +27,8 @@ const Trivia = ({ history }) => {
   const [alert, setAlert] = useState(null)
   // boolean to check whether current question has been answer
   const [answered, setAnswered] = useState(false)
+  // timer state
+  const [time, setTime] = useState(null)
 
   useEffect(() => {
     // setting room TODO allow room and username to persist to localhost
@@ -73,6 +76,7 @@ const Trivia = ({ history }) => {
       {/* TODO FADE IN AND OUT THIS SHIT */}
       <TriviaMessages messages={messages} />
 
+      <TrivaTimer time={time} setTime={setTime} />
       <TriviaQuestion
         question={questions.slice(-1)[0]}
         entities={entities}
@@ -82,9 +86,15 @@ const Trivia = ({ history }) => {
         score={score}
         setAnswered={setAnswered}
         answered={answered}
+        alert={alert}
+        setAlert={setAlert}
       />
-      <button className='btn' onClick={gameStart}>
-        start
+      <button
+        className='btn'
+        onClick={gameStart}
+        disabled={questions.length > 0 && !answered}
+      >
+        {questions.length === 0 ? 'start' : 'next question'}
       </button>
     </section>
   )

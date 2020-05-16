@@ -27,6 +27,10 @@
 
     box-shadow: 0 1rem 2rem rgba($dark-color, 0.5);
   }
+
+  &:disabled {
+    background-color: $dark-color;
+  }
 }
 
 // Headings

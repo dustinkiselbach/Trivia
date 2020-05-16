@@ -7,6 +7,8 @@ const TriviaQuestion = ({
   score,
   setScore,
   setAnswered,
+  alert,
+  setAlert,
   answered,
   entities
 }) => {
@@ -19,6 +21,9 @@ const TriviaQuestion = ({
     if (question) {
       if (question.correct_answer === userAnswer) {
         setScore(score + 1)
+        setAlert('correct')
+      } else {
+        setAlert('incorrect')
       }
     }
   }, [userAnswer])
@@ -28,7 +33,7 @@ const TriviaQuestion = ({
     newQuestion = (
       <>
         <div className='trivia__question-answered'>
-          the correct answer was {question.correct_answer}
+          {alert}, the correct answer was {question.correct_answer}
         </div>
       </>
     )
