@@ -8,9 +8,9 @@ const Entities = require('html-entities').AllHtmlEntities
 
 const entities = new Entities()
 
-const Trivia = () => {
+const Trivia = ({ history }) => {
   const triviaContext = useContext(TriviaContext)
-  const { socket, username, room } = triviaContext
+  const { socket, username, room, leaveRoom } = triviaContext
 
   // Getting messages from socket
   const [messages, setMessages] = useState('')
@@ -28,11 +28,15 @@ const Trivia = () => {
   const [answered, setAnswered] = useState(false)
 
   useEffect(() => {
-    socket.emit('joinRoom', { username, room })
+    // setting room TODO allow room and username to persist to localhost
+    // for now should kick you out when you refresh?
+    socket.connect()
 
+    socket.emit('joinRoom', { username, room })
     // Getting room users
     socket.on('roomUsers', ({ room, users }) => {
       setRoomUsers(users)
+      console.log(room, users)
     })
 
     // setting Messages
@@ -43,9 +47,15 @@ const Trivia = () => {
     // Setting questions
     socket.on('question', question => {
       setQuestions(questions => [...questions, question])
+      setAnswered(false)
     })
 
-    return () => console.log('unmount')
+    // When you leave the room clear your room
+    // it isn't disconnected the user for some reason
+    return () => {
+      socket.disconnect()
+      leaveRoom()
+    }
   }, [])
 
   useEffect(() => {
@@ -54,7 +64,6 @@ const Trivia = () => {
 
   const gameStart = () => {
     socket.emit('gameStart')
-    setAnswered(false)
   }
 
   return (

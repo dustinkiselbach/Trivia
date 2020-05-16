@@ -21,6 +21,10 @@ const TriviaState = props => {
     if (localStorage.getItem('username') !== null) {
       getUsername(localStorage.getItem('username'))
     }
+    // Checking if room is in localstorage
+    if (localStorage.getItem('room') !== null) {
+      getRoom(localStorage.getItem('room'))
+    }
   }, [])
 
   const [state, dispatch] = useReducer(triviaReducer, initialState)
@@ -33,7 +37,14 @@ const TriviaState = props => {
 
   // get users room
   const getRoom = room => {
+    localStorage.setItem('room', room)
     dispatch({ type: GET_ROOM, payload: room })
+  }
+
+  // leave users room
+  const leaveRoom = () => {
+    localStorage.removeItem('room')
+    dispatch({ type: GET_ROOM, payload: null })
   }
 
   // get all categories
@@ -56,6 +67,7 @@ const TriviaState = props => {
         categories: state.categories,
         getUsername,
         getRoom,
+        leaveRoom,
         getCategories
       }}
     >

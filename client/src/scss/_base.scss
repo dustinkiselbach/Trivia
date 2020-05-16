@@ -13,6 +13,15 @@ body {
   color: $light-color;
 }
 
+html {
+  @media only screen and (max-width: 900px) {
+    font-size: 0.9rem;
+  }
+  @media only screen and(max-width: 500px) {
+    font-size: 0.7rem;
+  }
+}
+
 a {
   text-decoration: none;
   color: black;
