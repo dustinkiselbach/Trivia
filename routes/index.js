@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/api', (req, res) => {
+router.get('/api/secret', (req, res) => {
   res.send({ response: 'I am alive' }).status(200)
 })
 

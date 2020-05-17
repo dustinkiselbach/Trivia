@@ -10,7 +10,7 @@ const Rooms = ({ history }) => {
 
   const onClickCreate = () => {
     getRoom(newRoom)
-    history.push('/game')
+    history.push('/create')
   }
 
   const onClickJoin = () => {

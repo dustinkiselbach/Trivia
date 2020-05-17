@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTransition, animated } from 'react-spring'
 
 const TriviaMessages = ({ messages }) => {

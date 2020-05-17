@@ -46,6 +46,17 @@
     justify-content: center;
     text-align: center;
 
+    &-answered {
+      & .wrong {
+        color: #d9534f;
+        font-weight: 700;
+      }
+      & .correct {
+        color: #5cb85c;
+        font-weight: 700;
+      }
+    }
+
     & ul {
       & li {
         cursor: pointer;

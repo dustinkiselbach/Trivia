@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import classnames from 'classnames'
 
 const TriviaQuestion = ({
   question,
@@ -33,7 +34,15 @@ const TriviaQuestion = ({
     newQuestion = (
       <>
         <div className='trivia__question-answered'>
-          {alert}, the correct answer was {question.correct_answer}
+          <span
+            className={classnames(null, {
+              wrong: alert === 'incorrect',
+              correct: alert === 'correct'
+            })}
+          >
+            {alert}
+          </span>
+          , the correct answer was {question.correct_answer}
         </div>
       </>
     )

@@ -11,9 +11,16 @@ const entities = new Entities()
 
 const Trivia = () => {
   const triviaContext = useContext(TriviaContext)
-  const { socket, username, room, leaveRoom } = triviaContext
+  const {
+    socket,
+    username,
+    room,
+    numberOfQuestions,
+    difficulty,
+    leaveRoom
+  } = triviaContext
 
-  const startingTime = 20
+  const startingTime = 15
 
   // Getting messages from socket
   const [messages, setMessages] = useState('')
@@ -37,6 +44,12 @@ const Trivia = () => {
     // for now should kick you out when you refresh?
     socket.connect()
 
+    // if user created the room
+    if (numberOfQuestions !== null && difficulty !== null) {
+      // fetch datafrom server with number of questions and difficulty
+      socket.emit('preGame', { numberOfQuestions, difficulty })
+    }
+
     socket.emit('joinRoom', { username, room })
     // Getting room users
     socket.on('roomUsers', ({ room, users }) => {
@@ -54,6 +67,17 @@ const Trivia = () => {
       setQuestions(questions => [...questions, question])
       setAnswered(false)
       setTime(startingTime)
+    })
+
+    // Event when the questions end
+    socket.on('gameEnd', () => {
+      socket.emit('gameEndOn')
+      setScore(0)
+      // if user created the room
+      if (numberOfQuestions !== null && difficulty !== null) {
+        // fetch datafrom server with number of questions and difficulty
+        socket.emit('preGame', { numberOfQuestions, difficulty })
+      }
     })
 
     // When you leave the room clear your room
@@ -78,8 +102,6 @@ const Trivia = () => {
   const gameStart = () => {
     socket.emit('gameStart')
   }
-
-  console.log(answered, time)
 
   return (
     <section className='trivia'>

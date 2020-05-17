@@ -4,7 +4,7 @@ import triviaReducer from './triviaReducer'
 import axios from 'axios'
 import socketIOClient from 'socket.io-client'
 
-import { GET_USERNAME, GET_ROOM, GET_CATEGORIES } from '../types'
+import { GET_USERNAME, GET_ROOM, GET_CATEGORIES, GET_PARAMS } from '../types'
 
 const TriviaState = props => {
   const initialState = {
@@ -13,7 +13,9 @@ const TriviaState = props => {
     socket: socketIOClient('https://cryptic-stream-18621.herokuapp.com/'),
     room: null,
     username: null,
-    categories: null
+    categories: null,
+    numberOfQuestions: null,
+    difficulty: null
   }
 
   useEffect(() => {
@@ -47,6 +49,11 @@ const TriviaState = props => {
     dispatch({ type: GET_ROOM, payload: null })
   }
 
+  // get Trivia Paramaters
+  const getParams = params => {
+    dispatch({ type: GET_PARAMS, payload: params })
+  }
+
   // get all categories
   const getCategories = async () => {
     try {
@@ -65,10 +72,13 @@ const TriviaState = props => {
         username: state.username,
         room: state.room,
         categories: state.categories,
+        numberOfQuestions: state.numberOfQuestions,
+        difficulty: state.difficulty,
         getUsername,
         getRoom,
         leaveRoom,
-        getCategories
+        getCategories,
+        getParams
       }}
     >
       {props.children}
