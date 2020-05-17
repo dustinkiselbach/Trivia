@@ -8,7 +8,11 @@ const TriviaTimer = ({ time, setTime }) => {
       }, 1000)
     }
   })
-  return <div>{time}</div>
+  return (
+    <div className='trivia__timer'>
+      <span className='timer'>{time}</span>
+    </div>
+  )
 }
 
 export default TriviaTimer

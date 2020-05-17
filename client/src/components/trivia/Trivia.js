@@ -9,9 +9,11 @@ const Entities = require('html-entities').AllHtmlEntities
 
 const entities = new Entities()
 
-const Trivia = ({ history }) => {
+const Trivia = () => {
   const triviaContext = useContext(TriviaContext)
   const { socket, username, room, leaveRoom } = triviaContext
+
+  const startingTime = 20
 
   // Getting messages from socket
   const [messages, setMessages] = useState('')
@@ -51,6 +53,7 @@ const Trivia = ({ history }) => {
     socket.on('question', question => {
       setQuestions(questions => [...questions, question])
       setAnswered(false)
+      setTime(startingTime)
     })
 
     // When you leave the room clear your room
@@ -65,9 +68,18 @@ const Trivia = ({ history }) => {
     socket.emit('updateScore', score)
   }, [score])
 
+  useEffect(() => {
+    if (time === 0 && !answered) {
+      setAnswered(true)
+      setAlert('Timed out')
+    }
+  }, [time])
+
   const gameStart = () => {
     socket.emit('gameStart')
   }
+
+  console.log(answered, time)
 
   return (
     <section className='trivia'>
@@ -92,7 +104,7 @@ const Trivia = ({ history }) => {
       <button
         className='btn'
         onClick={gameStart}
-        disabled={questions.length > 0 && !answered}
+        disabled={(questions.length > 0 && !answered) || time > 0}
       >
         {questions.length === 0 ? 'start' : 'next question'}
       </button>
